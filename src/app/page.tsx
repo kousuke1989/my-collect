@@ -58,6 +58,8 @@ const categories = [
   { name: "Design Objects", desc: "Precision in everyday form." },
 ];
 
+const hdImage = (url: string) => url.replace(/_ex=\d+x\d+/, "_ex=500x500");
+
 const rankings = [
   { rank: "01", name: "Santal 33", brand: "LE LABO", rating: "4.9", type: "Fragrance" },
   { rank: "02", name: "Original Achilles", brand: "COMMON PROJECTS", rating: "4.8", type: "Footwear" },
@@ -266,7 +268,7 @@ export default function Home() {
                 <div className="aspect-3/4 bg-white mb-6 border border-ink/5 overflow-hidden flex items-center justify-center">
                   {item.mediumImageUrls[0] ? (
                     <img
-                      src={item.mediumImageUrls[0].imageUrl}
+                      src={hdImage(item.mediumImageUrls[0].imageUrl)}
                       alt={item.itemName}
                       className="w-full h-full object-cover"
                     />
@@ -394,7 +396,7 @@ export default function Home() {
               </div>
               {item.mediumImageUrls[0] && (
                 <img
-                  src={item.mediumImageUrls[0].imageUrl}
+                  src={hdImage(item.mediumImageUrls[0].imageUrl)}
                   alt={item.itemName}
                   className="w-12 h-12 object-cover shrink-0 border border-ink/5"
                 />
