@@ -142,7 +142,10 @@ export default function Home() {
       fetch("/api/rakuten/ranking").then((r) => r.json()),
     ]).then(([itemsData, rankingData]) => {
       if (itemsData.Items) setNewItems(itemsData.Items.map((i: { Item: RakutenItem }) => i.Item));
-      if (rankingData.Items) setRankingItems(rankingData.Items.map((i: { Item: RakutenRankingItem }) => i.Item));
+      if (rankingData.Items) {
+        const items = rankingData.Items.map((i: { Item: RakutenRankingItem }) => i.Item);
+        setRankingItems(items.sort((a: RakutenRankingItem, b: RakutenRankingItem) => a.rank - b.rank).slice(0, 4));
+      }
     }).catch(() => {});
   }, []);
 
