@@ -20,8 +20,7 @@ export async function GET() {
     keyword: "ライフスタイル 雑貨",
   });
 
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  console.log("[rakuten/items] appUrl:", appUrl, "appId:", appId?.slice(0, 8));
+  const appUrl = process.env.APP_URL ?? "https://my-collect-mauve.vercel.app";
 
   return new Promise<NextResponse>((resolve) => {
     const req = https.get(
@@ -30,7 +29,8 @@ export async function GET() {
         path: `/ichibams/api/IchibaItem/Search/20260401?${params.toString()}`,
         headers: {
           Referer: appUrl,
-          "User-Agent": "MY-COLE/1.0",
+          Origin: appUrl,
+          "User-Agent": "Mozilla/5.0 (compatible; MY-COLE/1.0)",
         },
       },
       (res) => {
