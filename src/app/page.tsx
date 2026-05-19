@@ -115,6 +115,9 @@ const curators = [
   },
 ];
 
+const avatarUrl = (handle: string) =>
+  `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(handle)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+
 const faqs = [
   {
     q: "MY-COLE とはどんなサービスですか？",
@@ -456,8 +459,8 @@ export default function Home() {
 
                 {/* Avatar */}
                 <div className="flex flex-col items-center gap-y-3 py-2">
-                  <div className="w-16 h-16 rounded-full bg-violet/10 border border-violet/20 flex items-center justify-center">
-                    <span className="text-xl font-black text-violet">{c.initial}</span>
+                  <div className="w-16 h-16 rounded-full bg-violet/10 border border-violet/20 overflow-hidden">
+                    <img src={avatarUrl(c.handle)} alt={c.handle} className="w-full h-full object-cover" />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-bold tracking-widest text-ink">@{c.handle}</p>

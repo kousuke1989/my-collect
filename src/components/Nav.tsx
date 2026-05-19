@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Home, Search, PlusCircle, User } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const items = [
   { icon: Home,       label: "HOME",    href: "/" },
@@ -14,7 +16,25 @@ const items = [
 
 export default function Nav({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -38,6 +58,38 @@ export default function Nav({ children }: { children: React.ReactNode }) {
         >
           MY-COLE
         </Link>
+
+        {/* Auth buttons */}
+        <div className="flex items-center gap-x-3">
+          {user ? (
+            <>
+              <span className="text-[10px] tracking-widest text-ink/40 uppercase hidden lg:block">
+                {user.email?.split("@")[0]}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-[10px] tracking-[0.3em] uppercase text-ink/50 hover:text-violet transition-colors"
+              >
+                ログアウト
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-[10px] tracking-[0.3em] uppercase text-ink/50 hover:text-violet transition-colors"
+              >
+                ログイン
+              </Link>
+              <Link
+                href="/register"
+                className="text-[10px] tracking-[0.3em] uppercase bg-ink text-sand px-4 py-2 hover:bg-violet transition-colors"
+              >
+                新規登録
+              </Link>
+            </>
+          )}
+        </div>
       </header>
 
       {/* ── Desktop: dropdown menu ─────────────────────────────── */}
@@ -68,7 +120,7 @@ export default function Nav({ children }: { children: React.ReactNode }) {
         </nav>
       </div>
 
-      {/* Backdrop — click outside to close */}
+      {/* Backdrop */}
       {open && (
         <div
           className="hidden md:block fixed inset-0 z-80 top-16"
