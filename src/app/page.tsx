@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import { Award, MessageSquare, Layers, ArrowRight } from "lucide-react";
-import "swiper/css";
-import "swiper/css/free-mode";
 
 type RakutenItem = {
   itemName: string;
@@ -241,8 +239,9 @@ export default function Home() {
         <Swiper
           slidesPerView={1.2}
           spaceBetween={20}
-          freeMode
-          mousewheel
+          speed={400}
+          freeMode={{ enabled: true, momentum: true, momentumRatio: 0.9, momentumVelocityRatio: 1.0, momentumBounce: false }}
+          mousewheel={{ sensitivity: 0.5, releaseOnEdges: true }}
           modules={[FreeMode, Mousewheel]}
           breakpoints={{
             640: { slidesPerView: 2.2, spaceBetween: 30 },
@@ -304,8 +303,9 @@ export default function Home() {
         <Swiper
           slidesPerView={1.1}
           spaceBetween={20}
-          freeMode
-          mousewheel
+          speed={400}
+          freeMode={{ enabled: true, momentum: true, momentumRatio: 0.9, momentumVelocityRatio: 1.0, momentumBounce: false }}
+          mousewheel={{ sensitivity: 0.5, releaseOnEdges: true }}
           modules={[FreeMode, Mousewheel]}
           breakpoints={{
             768: { slidesPerView: 2.2, spaceBetween: 30 },
@@ -347,8 +347,9 @@ export default function Home() {
         <Swiper
           slidesPerView={2.2}
           spaceBetween={15}
-          freeMode
-          mousewheel
+          speed={400}
+          freeMode={{ enabled: true, momentum: true, momentumRatio: 0.9, momentumVelocityRatio: 1.0, momentumBounce: false }}
+          mousewheel={{ sensitivity: 0.5, releaseOnEdges: true }}
           modules={[FreeMode, Mousewheel]}
           breakpoints={{
             640: { slidesPerView: 3.2, spaceBetween: 20 },
@@ -439,8 +440,9 @@ export default function Home() {
         <Swiper
           slidesPerView={1.2}
           spaceBetween={20}
-          freeMode
-          mousewheel
+          speed={400}
+          freeMode={{ enabled: true, momentum: true, momentumRatio: 0.9, momentumVelocityRatio: 1.0, momentumBounce: false }}
+          mousewheel={{ sensitivity: 0.5, releaseOnEdges: true }}
           modules={[FreeMode, Mousewheel]}
           breakpoints={{
             640: { slidesPerView: 2.2, spaceBetween: 24 },

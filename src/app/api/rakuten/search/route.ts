@@ -1,7 +1,14 @@
 import https from "https";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const keyword = searchParams.get("keyword") ?? "";
+
+  if (!keyword.trim()) {
+    return NextResponse.json({ Items: [] });
+  }
+
   const appId = process.env.RAKUTEN_APP_ID;
   const accessKey = process.env.RAKUTEN_ACCESS_KEY;
   if (!appId || !accessKey) {
@@ -11,14 +18,13 @@ export async function GET() {
     );
   }
 
-  // インテリア・雑貨ジャンル (genreId: 100804) でサイトのテイストに合わせる
   const params = new URLSearchParams({
     applicationId: appId,
     accessKey: accessKey,
-    hits: "4",
-    genreId: "100804",
-    age: "30",
-    sex: "0",
+    hits: "12",
+    sort: "-reviewCount",
+    imageFlag: "1",
+    keyword,
   });
 
   const appUrl = process.env.APP_URL ?? "https://my-collect-mauve.vercel.app";
@@ -27,7 +33,7 @@ export async function GET() {
     const req = https.get(
       {
         hostname: "openapi.rakuten.co.jp",
-        path: `/ichibaranking/api/IchibaItem/Ranking/20220601?${params.toString()}`,
+        path: `/ichibams/api/IchibaItem/Search/20260401?${params.toString()}`,
         headers: {
           Referer: appUrl,
           Origin: appUrl,
@@ -41,7 +47,7 @@ export async function GET() {
           try {
             resolve(NextResponse.json(JSON.parse(data)));
           } catch {
-            resolve(NextResponse.json({ error: "parse error", raw: data }, { status: 500 }));
+            resolve(NextResponse.json({ error: "parse error" }, { status: 500 }));
           }
         });
       }

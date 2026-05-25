@@ -11,13 +11,27 @@ export async function GET() {
     );
   }
 
+  // 時間帯ごとに異なるカテゴリをローテーション
+  const KEYWORDS = [
+    "フレグランス オードパルファム ブランド",
+    "レザー 本革 財布 小物 ブランド",
+    "北欧 インテリア デザイン 雑貨",
+    "スニーカー レザーシューズ ブランド メンズ",
+    "アロマ キャンドル ディフューザー ブランド",
+    "メンズ シンプル Tシャツ カットソー ブランド",
+    "レディース ミニマル ワンピース ブラウス ブランド",
+  ];
+  const keyword = KEYWORDS[Math.floor(Date.now() / (1000 * 60 * 60 * 4)) % KEYWORDS.length];
+
   const params = new URLSearchParams({
     applicationId: appId,
     accessKey: accessKey,
     hits: "6",
-    sort: "-updateTimestamp",
+    sort: "-reviewCount",
     imageFlag: "1",
-    keyword: "ライフスタイル 雑貨",
+    minPrice: "3000",
+    availability: "1",
+    keyword,
   });
 
   const appUrl = process.env.APP_URL ?? "https://my-collect-mauve.vercel.app";

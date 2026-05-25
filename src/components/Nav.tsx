@@ -8,10 +8,10 @@ import { createClient } from "@/lib/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const items = [
-  { icon: Home,       label: "HOME",    href: "/" },
-  { icon: Search,     label: "SEARCH",  href: "/search" },
-  { icon: PlusCircle, label: "POST",    href: "/post" },
-  { icon: User,       label: "ACCOUNT", href: "/account" },
+  { icon: Home, label: "HOME", href: "/" },
+  { icon: Search, label: "SEARCH", href: "/search" },
+  { icon: PlusCircle, label: "POST", href: "/post" },
+  { icon: User, label: "ACCOUNT", href: "/account" },
 ];
 
 export default function Nav({ children }: { children: React.ReactNode }) {
@@ -23,7 +23,9 @@ export default function Nav({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null);
     });
     return () => subscription.unsubscribe();
