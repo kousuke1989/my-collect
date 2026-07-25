@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import { Award, MessageSquare, Layers, ArrowRight } from "lucide-react";
@@ -65,11 +66,13 @@ const rankings = [
   { rank: "04", name: "Stool 60", brand: "ARTEK", rating: "4.6", type: "Furniture" },
 ];
 
+// avatar: Lummi ライセンスの AI 生成ポートレート（実在しない人物）。
+// 詳細な出典は public/curators/CREDITS.md を参照。
 const curators = [
   {
     id: "C01",
     handle: "Aoyama_92",
-    initial: "A",
+    avatar: "/curators/aoyama-92.jpg",
     specialty: "Fragrance",
     items: 48,
     followers: 312,
@@ -78,7 +81,7 @@ const curators = [
   {
     id: "C02",
     handle: "minimal_life",
-    initial: "M",
+    avatar: "/curators/minimal-life.jpg",
     specialty: "Leather Goods",
     items: 36,
     followers: 284,
@@ -87,7 +90,7 @@ const curators = [
   {
     id: "C03",
     handle: "archivist_01",
-    initial: "R",
+    avatar: "/curators/archivist-01.jpg",
     specialty: "Furniture",
     items: 27,
     followers: 201,
@@ -96,7 +99,7 @@ const curators = [
   {
     id: "C04",
     handle: "S.Kousuke",
-    initial: "S",
+    avatar: "/curators/s-kousuke.jpg",
     specialty: "Footwear",
     items: 53,
     followers: 430,
@@ -105,16 +108,13 @@ const curators = [
   {
     id: "C05",
     handle: "interior_curator",
-    initial: "I",
+    avatar: "/curators/interior-curator.jpg",
     specialty: "Design Objects",
     items: 31,
     followers: 178,
     brands: ["BRAUN", "ANGLEPOISE", "HAY"],
   },
 ];
-
-const avatarUrl = (handle: string) =>
-  `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(handle)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
 
 const faqs = [
   {
@@ -462,7 +462,13 @@ export default function Home() {
                 {/* Avatar */}
                 <div className="flex flex-col items-center gap-y-3 py-2">
                   <div className="w-16 h-16 rounded-full bg-violet/10 border border-violet/20 overflow-hidden">
-                    <img src={avatarUrl(c.handle)} alt={c.handle} className="w-full h-full object-cover" />
+                    <Image
+                      src={c.avatar}
+                      alt={`@${c.handle}`}
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-bold tracking-widest text-ink">@{c.handle}</p>
